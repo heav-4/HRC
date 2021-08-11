@@ -39,6 +39,15 @@ Sends a message to a channel.
         "message": "message_text"
     }
 
+## `get_channel_state` (Client -> Server)
+Requests the state of a channel. The server will send a `channel_state` event with a state_type of `set`.
+
+    {
+        "type": "get_channel_state",
+        "channel": "channel_name",
+        "state": "users", // other things planned.
+    }
+
 # Server -> Client
 
 ## `ok` (Server -> Client)
@@ -71,13 +80,24 @@ A message from a channel.
         "extras": {} // stuff MIGHT exist here.
     }
 
+## `channel_state` (Server -> Client)
+The state of a channel that the client is subscribed to has been updated.
+
+    {
+        "type": "channel_state",
+        "channel": "channel_name",
+        "state_type": "add" or "remove" or "set",
+        "state": "users", // other things planned.
+        "value": ["things"]
+    }
+
 # Error IDs
 Might expand on this later.
 
     0: invalid JSON
     1: internal server error
     2: already in channel (join_channel)
-    3: not in channel (leave_channel, send_message)
+    3: not in channel (leave_channel, send_message, get_channel_state)
     4: invalid channel name (join_channel)
     5: no permission (any)
     6: unsupported request type
